@@ -4,7 +4,7 @@ Provides utilities to validate and sanitize user input to prevent injection atta
 """
 
 import re
-from typing import Any, Optional
+from typing import Any, Optional, Tuple
 
 
 class InputValidator:
@@ -136,7 +136,7 @@ class InputValidator:
     def validate_and_sanitize(input_str: str, 
                              max_length: Optional[int] = None,
                              check_sql: bool = True,
-                             check_xss: bool = True) -> tuple[bool, str]:
+                             check_xss: bool = True) -> Tuple[bool, str]:
         """
         Validate and sanitize input in one operation
         

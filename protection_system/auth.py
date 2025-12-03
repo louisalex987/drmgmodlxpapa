@@ -7,7 +7,7 @@ import hashlib
 import hmac
 import secrets
 import time
-from typing import Optional, Dict, Set
+from typing import Optional, Dict, Set, Tuple
 
 
 class AuthManager:
@@ -25,7 +25,7 @@ class AuthManager:
         self.user_permissions: Dict[str, Set[str]] = {}
     
     @staticmethod
-    def hash_password(password: str, salt: Optional[str] = None) -> tuple[str, str]:
+    def hash_password(password: str, salt: Optional[str] = None) -> Tuple[str, str]:
         """
         Hash a password using SHA-256 with salt
         

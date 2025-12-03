@@ -59,7 +59,10 @@ class EncryptionManager:
         plaintext_bytes = plaintext.encode('utf-8')
         
         # Expand key to match plaintext length
-        key_expanded = (self._derived_key * (len(plaintext_bytes) // len(self._derived_key) + 1))[:len(plaintext_bytes)]
+        plaintext_len = len(plaintext_bytes)
+        key_len = len(self._derived_key)
+        repeat_count = plaintext_len // key_len + 1
+        key_expanded = (self._derived_key * repeat_count)[:plaintext_len]
         
         # XOR encryption
         encrypted = bytes(p ^ k for p, k in zip(plaintext_bytes, key_expanded))
@@ -92,7 +95,10 @@ class EncryptionManager:
             encrypted = encrypted_with_iv[16:]
             
             # Expand key to match encrypted data length
-            key_expanded = (self._derived_key * (len(encrypted) // len(self._derived_key) + 1))[:len(encrypted)]
+            encrypted_len = len(encrypted)
+            key_len = len(self._derived_key)
+            repeat_count = encrypted_len // key_len + 1
+            key_expanded = (self._derived_key * repeat_count)[:encrypted_len]
             
             # XOR decryption
             decrypted = bytes(e ^ k for e, k in zip(encrypted, key_expanded))
