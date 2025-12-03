@@ -1,0 +1,36 @@
+{% extends "layout.html" %}
+
+{% block title %}Accueil - DRM System{% endblock %}
+
+{% block content %}
+<div style="text-align: center; margin-top: 100px;">
+    <h1 style="font-size: 3em; margin-bottom: 20px; background: linear-gradient(to right, #7aa2f7, #bb9af7); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+        DRM System
+    </h1>
+    <p style="font-size: 1.2em; color: #a9b1d6; max-width: 600px; margin: 0 auto 40px;">
+        Système de gestion de licences sécurisé pour vos addons Garry's Mod.
+        Gérez vos clients, générez des clés et surveillez l'utilisation en temps réel.
+    </p>
+    
+    <div style="display: flex; gap: 20px; justify-content: center;">
+        <a href="{{ url_for('login') }}" style="background: #7aa2f7; color: #1a1b26; padding: 12px 30px; border-radius: 6px; font-weight: bold; font-size: 1.1em;">
+            Accéder au Dashboard
+        </a>
+    </div>
+
+    <div style="margin-top: 80px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; text-align: left;">
+        <div class="card">
+            <h3 style="color: #7aa2f7;">Sécurisé</h3>
+            <p>Protection avancée contre le piratage et la redistribution non autorisée.</p>
+        </div>
+        <div class="card">
+            <h3 style="color: #bb9af7;">Temps Réel</h3>
+            <p>Suivi des connexions et logs détaillés pour chaque licence active.</p>
+        </div>
+        <div class="card">
+            <h3 style="color: #7dcfff;">Simple</h3>
+            <p>Interface intuitive pour gérer vos clients et vos produits.</p>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,124 @@
+{% extends "layout.html" %}
+
+{% block title %}Dashboard - DRM{% endblock %}
+
+{% block content %}
+<header>
+    <h1>Gestion des licences</h1>
+    <nav>
+        <a href="{{ url_for('dashboard') }}">Dashboard</a>
+        <span style="margin: 0 10px; color: #414868;">|</span>
+        <a href="{{ url_for('logout') }}">Déconnexion</a>
+    </nav>
+</header>
+
+<section class="grid">
+    <!-- Create Client Form -->
+    <div class="card">
+        <h2>Nouveau Client</h2>
+        <form method="post" action="{{ url_for('create_client') }}">
+            <label>Nom du client</label>
+            <input type="text" name="name" placeholder="Ex: Serveur DarkRP" required>
+            
+            <label>Email / Contact</label>
+            <input type="text" name="email" placeholder="contact@example.com" required>
+            
+            <button type="submit">Créer le client</button>
+        </form>
+    </div>
+
+    <!-- Create Addon Form -->
+    <div class="card">
+        <h2>Nouvel Addon</h2>
+        <form method="post" action="{{ url_for('create_addon') }}">
+            <label>Nom de l'addon</label>
+            <input type="text" name="name" placeholder="Ex: Yurei Stats" required>
+            
+            <label>Version</label>
+            <input type="text" name="version" placeholder="1.0.0" required>
+            
+            <button type="submit">Ajouter l'addon</button>
+        </form>
+    </div>
+
+    <!-- Generate License Form -->
+    <div class="card">
+        <h2>Générer une Licence</h2>
+        <form method="post" action="{{ url_for('dash_generate') }}">
+            <label>Client</label>
+            <select name="client_id" required>
+                <option value="" disabled selected>Choisir un client...</option>
+                {% for client in clients %}
+                    <option value="{{ client.id }}">{{ client.name }}</option>
+                {% endfor %}
+            </select>
+            
+            <label>Addon</label>
+            <select name="addon_id" required>
+                {% for addon in addons %}
+                    <option value="{{ addon.id }}">{{ addon.name }} v{{ addon.version }}</option>
+                {% endfor %}
+            </select>
+            
+            <button type="submit">Générer</button>
+        </form>
+    </div>
+
+    <!-- Stats / Info -->
+    <div class="card">
+        <h2>Statistiques</h2>
+        <p><strong>{{ clients|length }}</strong> Clients enregistrés</p>
+        <p><strong>{{ licenses|length }}</strong> Licences générées</p>
+        <p><strong>{{ addons|length }}</strong> Addons disponibles</p>
+    </div>
+</section>
+
+<section class="card">
+    <h2>Licences Actives</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Client</th>
+                <th>Addon</th>
+                <th>Clé (Aperçu)</th>
+                <th>Expiration</th>
+                <th>État</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for lic in licenses %}
+                <tr>
+                    <td>
+                        <a href="{{ url_for('client_detail', client_id=lic.client_id) }}">
+                            {{ lic.client_name }}
+                        </a>
+                    </td>
+                    <td>{{ lic.addon_name }}</td>
+                    <td><code>{{ lic.key[:10] }}...</code></td>
+                    <td>{{ lic.expiration[:10] }}</td>
+                    <td>
+                        {% if lic.active %}
+                            <span style="color: #9ece6a">Actif</span>
+                        {% else %}
+                            <span style="color: #f7768e">Inactif</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        <div style="display: flex; gap: 5px;">
+                            <a href="{{ url_for('license_detail', license_id=lic.id) }}" style="padding: 5px 10px; background: #7aa2f7; color: #1a1b26; border-radius: 4px; font-size: 0.9em;">Gérer</a>
+                            {% if lic.active %}
+                                <form method="post" action="{{ url_for('dash_deactivate', license_id=lic.id) }}" onsubmit="return confirm('Désactiver cette licence ?');" style="margin: 0;">
+                                    <button type="submit" style="background: #f7768e; color: white; padding: 5px 10px; font-size: 0.9em; width: auto;">Stop</button>
+                                </form>
+                            {% endif %}
+                        </div>
+                    </td>
+                </tr>
+            {% else %}
+                <tr><td colspan="6" style="text-align: center; color: #565f89;">Aucune licence trouvée</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</section>
+{% endblock %}

@@ -1,0 +1,16 @@
+{% extends "layout.html" %}
+
+{% block title %}Connexion - DRM{% endblock %}
+
+{% block content %}
+<div style="max-width: 400px; margin: 100px auto;">
+    <div class="card">
+        <h2 style="text-align: center; margin-bottom: 20px;">Connexion Admin</h2>
+        <form method="post">
+            <label>Mot de passe</label>
+            <input type="password" name="password" required autofocus>
+            <button type="submit" style="margin-top: 10px;">Se connecter</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,49 @@
+{% extends "layout.html" %}
+
+{% block title %}Client: {{ client.name }}{% endblock %}
+
+{% block content %}
+<header>
+    <div>
+        <h1>{{ client.name }}</h1>
+        <p style="color: #565f89;">{{ client.email }} • Créé le {{ client.created_at }}</p>
+    </div>
+    <a href="{{ url_for('dashboard') }}" class="button">← Retour au Dashboard</a>
+</header>
+
+<section class="card">
+    <h2>Licences du client</h2>
+    {% if licenses %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Addon</th>
+                    <th>Clé</th>
+                    <th>Expiration</th>
+                    <th>Active</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for lic in licenses %}
+                    <tr>
+                        <td>{{ lic.addon_name }}</td>
+                        <td><code>{{ lic.key[:16] }}...</code></td>
+                        <td>{{ lic.expiration[:10] }}</td>
+                        <td>
+                            {% if lic.active %}
+                                <span style="color: #9ece6a">Actif</span>
+                            {% else %}
+                                <span style="color: #f7768e">Inactif</span>
+                            {% endif %}
+                        </td>
+                        <td><a href="{{ url_for('license_detail', license_id=lic.id) }}">Détails</a></td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p style="text-align: center; color: #565f89; padding: 20px;">Aucune licence pour ce client.</p>
+    {% endif %}
+</section>
+{% endblock %}
